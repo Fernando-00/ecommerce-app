@@ -78,7 +78,7 @@ const ContactItem = styled.div`
 `;
 const Payment = styled.img`
     
-    width: 100%;
+    width: 50%;
 `;
 
 const Footer = () => {
