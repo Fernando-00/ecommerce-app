@@ -3,12 +3,14 @@ import styled from "styled-components"
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import { mobile } from "../responsive";
 
 const Container = styled.div``;
 
 const Wrapper = styled.div`
 
     padding: 20px;
+    ${mobile({padding: "10px"})}
 `;
 
 const Title = styled.h1`
@@ -37,7 +39,7 @@ const TopButton = styled.button`
 
 const TopTexts = styled.button`
 
-    
+${mobile({display: "none"})}
 `;
 
 
@@ -54,6 +56,7 @@ margin: 0px 10px;
 const Bottom = styled.div`
     display: flex;
     justify-content: space-between;
+    ${mobile({flexDirection: "column"})}
     
 `;
 const Info = styled.div`
@@ -65,6 +68,7 @@ const Info = styled.div`
 const Product = styled.div`
     display: flex;
     justify-content: space-between;
+    ${mobile({flexDirection: "column"})}
 `;
 const ProductDetail = styled.div`
     flex: 2;
@@ -114,11 +118,13 @@ const ProductAmountContainer = styled.div`
 const ProductAmount = styled.div`
     font-size: 24px;
     margin: 5px;
+    ${mobile({margin: "5px 15px"})}
 `;
 
 const ProductPrice = styled.div`
     font-size: 30px;
     font-weight: 200;
+    ${mobile({marginBottom: "20px"})}
 `;
 
 const Hr = styled.hr`
@@ -132,8 +138,35 @@ const Hr = styled.hr`
 
 const Summary = styled.div`
 flex: 1;
-
+border: 0.5px solid lightgray;
+border-radius: 10px;
+padding: 20px;
+height: 50vh;
     
+`;
+
+const SummaryTitle = styled.h1`
+    font-weight: 200;
+
+`;
+const SummaryItem = styled.div`
+    margin: 30px 0px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: ${props=>props.type === "total" && "500"};
+    font-size: ${props=>props.type === "total" && "24px"};
+
+`;
+const SummaryItemText = styled.span``;
+
+const SummaryItemPrice = styled.span``;
+const Button = styled.button`
+
+    width: 100%;
+    padding: 10px;
+    border-color: black;
+    color: white;
+    font-weight: 600;
 `;
 
 
@@ -198,7 +231,26 @@ const Cart = () => {
                         </PriceDetail>
                     </Product>
                 </Info>
-                <Summary>summary</Summary>
+                <Summary>
+                    <SummaryTitle>ORDER SUMMARY</SummaryTitle>
+                    <SummaryItem>
+                        <SummaryItemText>Subtotal</SummaryItemText>
+                        <SummaryItemText>$ 80</SummaryItemText>
+                    </SummaryItem>
+                    <SummaryItem>
+                        <SummaryItemText>Estimated Shipping</SummaryItemText>
+                        <SummaryItemText>$ 5.90</SummaryItemText>
+                    </SummaryItem>
+                    <SummaryItem>
+                        <SummaryItemText>Shipping Discount</SummaryItemText>
+                        <SummaryItemText>$ -5.90</SummaryItemText>
+                    </SummaryItem>
+                    <SummaryItem type="total">
+                        <SummaryItemText>Total</SummaryItemText>
+                        <SummaryItemText>$ 80</SummaryItemText>
+                    </SummaryItem>
+                    <Button>CHECKOUT NOW</Button>
+                </Summary>
 
             </Bottom>
         </Wrapper>
