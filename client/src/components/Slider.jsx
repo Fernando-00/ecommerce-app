@@ -1,7 +1,8 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@material-ui/icons"
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components"
-import {sliderItems} from "../data"
+import {featured, sliderItems} from "../data"
 import { mobile } from "../responsive";
 
 
@@ -98,6 +99,7 @@ cursor: pointer;
 
 const Slider = () => {
     const [slideIndex, setSlideIndex] = useState(0)
+    
 
     const handleClick = (direction) => {
         if(direction ==="left"){
@@ -127,7 +129,9 @@ const Slider = () => {
 
                     <Title>{item.title}</Title>
                     <Desc>{item.desc}</Desc>
+                    <Link to={`/products/${item.cat}`}>
                     <Button>SHOW NOW</Button>
+                    </Link>
 
                 </InfoContainer>
                 </Slide>

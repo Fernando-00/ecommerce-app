@@ -50,7 +50,7 @@ const Option = styled.option`
 
 //
 
-const ProductList = () => {
+const ProductList = (props) => {
     
 
   const location = useLocation();

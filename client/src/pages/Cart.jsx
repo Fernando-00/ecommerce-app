@@ -5,11 +5,10 @@ import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { mobile } from "../responsive";
-import StripeCheckout from "react-stripe-checkout";
 import { useState } from "react";
 import { useEffect } from "react";
-import { userRequest } from "../requestMethods";
 import { useNavigate } from "react-router-dom";
+import {loadStripe} from '@stripe/stripe-js';
 
 
 const KEY = process.env.REACT_APP_STRIPE;
@@ -183,7 +182,10 @@ const Cart = () => {
     const cart = useSelector(state=>state.persistedReducer.cart)
     const [stripeToken, setStripeToken] = useState(null);
     
+    
     const navigate = useNavigate();
+    
+    
 
     
 
@@ -191,22 +193,55 @@ const Cart = () => {
         setStripeToken(token);
     };
 
-    useEffect(()=>{
-        const makeRequest = async () =>{
-            try {
-                const res = await userRequest.post("/checkout/payment", {
-                    tokenId: stripeToken.id,
-                    amount: cart.total * 100,
+    const makeRequest = async () =>{
+
+
+        const stripe = await loadStripe(process.env.REACT_APP_STRIPE)
+        
+        let products = cart.products.map((item)=>{return {id: item._id, quantity: item.quantity}});
+        
+        fetch("http://localhost:5000/api/checkout/payment", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+            products: products
+            
+            }),
+        })
+            .then(res => {
+            if (res.ok) return res.json()
+            return res.json().then(json => Promise.reject(json))
+            })
+            .then((session) => {
+                console.log(session.id)
+                return stripe.redirectToCheckout({ sessionId: session.id});
+            })
+            .catch(e => {
+            console.error(e.error)
+            })
+
+    
+    };
+
+    // useEffect(()=>{
+    //     const makeRequest = async () =>{
+    //         try {
+    //             const res = await userRequest.post("/checkout/payment", {
+    //                 tokenId: stripeToken.id,
+    //                 amount: cart.total * 100,
+    //                 cart: cart
                     
 
-                });
-                navigate("/success", {data:res.data});
-            } catch (err) {
+    //             });
                 
-            }
-        };
-        stripeToken && makeRequest();
-    }, [stripeToken, cart.total, navigate])
+    //         } catch (err) {
+                
+    //         }
+    //     };
+    //     stripeToken && makeRequest();
+    // }, [stripeToken, cart.total, navigate])
 
   return (
     <Container>
@@ -244,7 +279,7 @@ const Cart = () => {
                                 <ProductAmount>{product.quantity}</ProductAmount>
                                 <Remove/>
                             </ProductAmountContainer>
-                            <ProductPrice>$ {product.price* product.quantity}</ProductPrice>
+                            <ProductPrice>$ {product.storePrice* product.quantity}</ProductPrice>
                         </PriceDetail>
                     </Product>))}
                     <Hr/>
@@ -268,20 +303,11 @@ const Cart = () => {
                         <SummaryItemText>Total</SummaryItemText>
                         <SummaryItemText>$ {cart.total}</SummaryItemText>
                     </SummaryItem>
-                    <StripeCheckout 
-                        name="Rosell Shop" 
-                        image="https://i.ibb.co/GVCj7MY/logo.png"
-                        billingAddress
-                        shippingAddress
-                        decription = {`Your total is $${cart.total}`}
-                        amount={cart.total * 100}
-                        token={onToken}
-                        stripeKey={KEY}
-                        >
-                    <Button>
+                    
+                    <Button onClick={makeRequest}>
                         CHECKOUT NOW
                     </Button>
-                </StripeCheckout>
+                
                 </Summary>
 
             </Bottom>

@@ -1,9 +1,11 @@
 import { Badge } from '@material-ui/core';
 import { Search, ShoppingCartOutlined } from '@material-ui/icons';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { logout } from '../redux/userRedux';
 import {mobile} from "../responsive"
 
 const Container = styled.div`
@@ -79,9 +81,44 @@ const MenuItem = styled.div`
     ${mobile({fontSize: "12px", marginLeft:"10px"})}
 `;
 
+const MenuImg = styled.img`
+    
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid lightgray;
+    cursor: pointer;
+    margin-left: 25px;
+    ${mobile({fontSize: "12px", marginLeft:"10px"})}
+`;
+
 const Navbar = () => {
 
-    const quantity = useSelector(state=>state.persistedReducer.cart.quantity)
+    const quantity = useSelector(state=>state.persistedReducer.cart.quantity);
+    const user = useSelector(state=> state.persistedReducer.user?.currentUser);
+    const [search, setSearch] = useState("");
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    
+
+    const handleLogout = () =>{
+        dispatch(logout());
+    };
+
+ 
+
+    const handleSubmit = event =>{
+        event.preventDefault();
+        console.log("activated")
+        console.log(search)
+        if(search != ""){
+            navigate(`../products/${search}`, { replace: true });
+            setSearch("");
+            
+        }
+        
+        
+    }
 
   return (
     <Container>
@@ -89,19 +126,25 @@ const Navbar = () => {
             <Left>
                 <Language>EN</Language>
                 <SearchContainer>
-                    <Input placeholder="Search"/>
+                    <form onSubmit={handleSubmit}>
+                    <Input placeholder="Search" name="search" onChange={(e)=>setSearch(e.target.value)} />
+                    </form>
                     
                     <Search style={{color:"gray", fontSize:16}}/>
                 </SearchContainer>
                 
             </Left>
             <Center>
+                <Link to="/" style={{textDecoration: "none", color:"inherit"}}>
                 <Logo>ROSELL.</Logo>
+                </Link>
             </Center>
             <Right>
 
-                <MenuItem>Register</MenuItem>
-                <MenuItem>Login</MenuItem>
+                
+                {user ? <><MenuItem>{user.username}</MenuItem><MenuImg src={user.img}/> <MenuItem><button onClick={handleLogout} style={{cursor:"pointer"}}>Logout</button></MenuItem> </>:
+                <><Link to="/register" style={{textDecoration:"none", color:"inherit"}}> <MenuItem>Register</MenuItem></Link> <Link to="/login" style={{textDecoration:"none", color:"inherit"}}><MenuItem>Login</MenuItem></Link> </>}
+                
                 <Link to="/cart">
                 <MenuItem>
 
@@ -114,8 +157,14 @@ const Navbar = () => {
             </Right>
         
         </Wrapper>
+
+        
         
     </Container>
+
+
+
+
   )
 }
 

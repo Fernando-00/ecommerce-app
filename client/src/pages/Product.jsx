@@ -115,13 +115,14 @@ const Button = styled.button`
 
 
 
-const Product = () => {
+const Product = (props) => {
 
     const location = useLocation();
     const id = location.pathname.split("/")[2];
 
     const [product, setProduct] = useState({});
     const [quantity, setQuantity] = useState(1);
+    console.log(product)
 
     const [color, setColor] = useState("");
     const [size, setSize] = useState("");
@@ -170,7 +171,7 @@ const Product = () => {
                 <Desc>
                 {product.desc}
                 </Desc>
-                <Price> {product.price}</Price>
+                <Price>$ {product.storePrice}</Price>
 
             
             <FilterContainer>

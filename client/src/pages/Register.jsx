@@ -1,4 +1,11 @@
 import styled from "styled-components"
+import Announcement from "../components/Announcement";
+import Navbar from "../components/Navbar";
+
+
+const RegisterWrapper = styled.div`
+
+`;
 
 const Container = styled.div`
     width: 100vw;
@@ -61,7 +68,13 @@ const Button = styled.button`
 
 const Register = () => {
   return (
+
+    <RegisterWrapper>
+
+        <Announcement/>
+        <Navbar/>
     <Container>
+        
         <Wrapper>
             <Title>CREATE AN ACOOUNT</Title>
             <Form>
@@ -81,6 +94,8 @@ const Register = () => {
         </Wrapper>
 
     </Container>
+
+    </RegisterWrapper>
   )
 }
 

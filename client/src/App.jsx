@@ -12,16 +12,22 @@ import {
 } from "react-router-dom";
 import Success from "./pages/Success";
 import { useSelector } from "react-redux";
+import ScrollToTop from "./ScrollToTop";
 
 
 const App = () => {
 
   const user = useSelector(state=> state.persistedReducer.user?.currentUser);
 
+  console.log(user)
+
+  
+
   
 
   return (
     <Router>
+      <ScrollToTop>
         <Routes>
           <Route exact path="/" element={<Home/>}/>
             
@@ -31,13 +37,14 @@ const App = () => {
 
           <Route path="/cart" element={<Cart/>}/>
 
-          <Route path="/success" element={<Success/>}/>
+          <Route path="/success/:id" element={<Success/>}/>
 
 
           <Route path="/login" element={ user ? <Navigate to="/"/> : <Login/>}/>  
           <Route path="/register" element={ user ? <Navigate to="/"/> : <Register/>}/>  
            
         </Routes>
+        </ScrollToTop>
     </Router>
   );
 };

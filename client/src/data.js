@@ -5,6 +5,7 @@ export const sliderItems = [
         title: "SUMMER SALE",
         desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
         bg: "f5fafd",
+        cat: "summer"
     },
     {
         id: 2,
@@ -12,6 +13,7 @@ export const sliderItems = [
         title: "WINTER SALE",
         desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
         bg: "fcf1ed",
+        cat: "winter"
     },
     {
         id: 3,
@@ -19,6 +21,7 @@ export const sliderItems = [
         title: "POPULAR SALE",
         desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
         bg: "fbf0f4",
+        cat: "popular"
     },
 ];
 
@@ -27,18 +30,22 @@ export const categories = [
         id: 1,
         img: "https://imageio.forbes.com/specials-images/dam/imageserve/973615122/960x0.jpg?format=jpg&width=960",
         title: "SHIRT STYLE!",
+        cat: "shirt"
     },
     {
         id: 2,
         img: "https://sc04.alicdn.com/kf/H38ba67acbc5e47bdb61d3bf2af4f9151f.jpg",
         title: "PANTS!",
+        cat: "pants"
     },
     {
         id: 3,
         img: "https://assets.vogue.com/photos/600b29c82dce4981b16c9524/master/w_2000,h_3000,c_limit/Paris%20Mens%20Fall%2021%20Day%201%20by%20STYLEDUMONDE%20Street%20Style%20Fashion%20Photography_95A7159FullRes.jpg",
         title: "LIGHT JACKETS!",
+        cat: "jacket"
     },
 ];
+
 
 
 export const popularProducts = [
