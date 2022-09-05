@@ -51,10 +51,7 @@ const FilterContainer = styled.div`
     ${mobile({width: "100%"})}
 `;
 
-const Filter = styled.div`
-    display: flex;
-    align-items: center;
-`;
+
 const FilterTitle = styled.span`
     font-size: 20px;
     font-weight: 200;
@@ -66,6 +63,17 @@ const FilterColor = styled.div`
     background-color: ${props=>props.color};
     margin: 0px 5px;
     cursor: pointer;
+
+
+    
+    
+    
+`;
+
+const Filter = styled.div`
+    display: flex;
+    align-items: center;
+    
 `;
 const FilterSize = styled.select`
     margin-left: 10px;
@@ -80,6 +88,10 @@ const AddContainer = styled.div`
     width: 50%;
     justify-content: space-between;
     ${mobile({width: "100%"})}
+
+    &:focus{
+        background-color: red; 
+    }
 `;
 
 const AmountContainer = styled.div`
@@ -114,15 +126,17 @@ const Button = styled.button`
 
 
 
-
 const Product = (props) => {
+
+    
 
     const location = useLocation();
     const id = location.pathname.split("/")[2];
+    
 
     const [product, setProduct] = useState({});
     const [quantity, setQuantity] = useState(1);
-    console.log(product)
+    
 
     const [color, setColor] = useState("");
     const [size, setSize] = useState("");
@@ -157,6 +171,8 @@ const Product = (props) => {
         );
         
     };
+
+    
   return (
     <Container>
         <Navbar/>
@@ -179,7 +195,7 @@ const Product = (props) => {
                     <FilterTitle>Color</FilterTitle>
 
                     {product.color?.map((c)=>(
-                        <FilterColor color={c} key={c} onClick={()=>setColor(c)}/>
+                        <FilterColor  color={c} key={c} onClick={()=>setColor(c)}  />
                     ))}
                     
                     

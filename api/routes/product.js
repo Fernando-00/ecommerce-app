@@ -33,7 +33,7 @@ router.post("/", verifyTokenAndAdmin, async (req, res)=>{
 router.put("/:id", verifyTokenAndAdmin, async (req, res)=>{
     
     try{
-        console.log(req)
+        
         const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
             $set: req.body
         }, {new:true}

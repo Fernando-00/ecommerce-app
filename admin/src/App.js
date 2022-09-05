@@ -18,6 +18,8 @@ import Login from "./pages/login/Login";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import ProtectedRoutes from "./ProtectedRoutes";
+import Transactions from "./pages/transactionsList/TransactionsList";
+
 
 
 
@@ -89,15 +91,17 @@ function App() {
           <Product/> 
         </div>
         </>}/>
-          <Route path="/newProduct" element={
-          <>
+
+        <Route exact path="/transactions" element={
+        <>
           <Topbar/>
-        <div className="container">
-          
-          <Sidebar/>
-          <NewProduct/> 
-        </div>
+          <div className="container">
+            <Sidebar/>
+            <Transactions/> 
+          </div>
         </>}/>
+        
+          
 
 
     </Route>

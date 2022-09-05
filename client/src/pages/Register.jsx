@@ -1,6 +1,10 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import Announcement from "../components/Announcement";
 import Navbar from "../components/Navbar";
+import { registerUser } from "../redux/apiCalls";
 
 
 const RegisterWrapper = styled.div`
@@ -67,6 +71,35 @@ const Button = styled.button`
 
 
 const Register = () => {
+
+  const [inputs, setInputs] = useState({});
+  const [error, setError] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  const handleChange = (e) => {
+    
+    setInputs(prev=>{
+      return {...prev, [e.target.name]:e.target.value}
+    })
+  };
+
+  const handleClick = (e) =>{
+    e.preventDefault();
+    if(inputs.password == inputs.confirm){
+        setError(false);
+        registerUser(inputs, dispatch, navigate);
+    }else{
+        setError(true);
+    }
+    
+    
+
+
+  };
+
+
   return (
 
     <RegisterWrapper>
@@ -78,18 +111,17 @@ const Register = () => {
         <Wrapper>
             <Title>CREATE AN ACOOUNT</Title>
             <Form>
-                <Input placeholder="name"/>
-                <Input placeholder="last name"/>
-                <Input placeholder="username"/>
-                <Input placeholder="email"/>
-                <Input placeholder="password"/>
-                <Input placeholder="confirm password"/>
+                <Input placeholder="username" name="username" onChange={(e)=>handleChange(e)}/>
+                <Input placeholder="email" name="email" onChange={(e)=>handleChange(e)}/>
+                <Input placeholder="password" type="password" name="password" style={{font: "small-caption", fontSize: "16px"}} onChange={(e)=>handleChange(e)}/>
+                <Input placeholder="confirm password" type="password"  style={{font: "small-caption", fontSize: "16px"}} name="confirm" onChange={(e)=>handleChange(e)}/>
                 <Agreement>
                     By creating an account , I consent to
                      the processing of my personal data in
                       accordance with the <b>PRIVACY POLICY</b>
                 </Agreement>
-                <Button>CREATE</Button>
+                {error ? <p style={{color:"red"}}>Please ensure the passwords match...</p>: ""}
+                <Button onClick={(e)=>handleClick(e)}>CREATE</Button>
             </Form>
         </Wrapper>
 

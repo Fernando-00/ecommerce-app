@@ -17,7 +17,7 @@ const Products = ({cat, filters, sort}) => {
 
   const [products, setProducts] = useState(()=>[]);
   const [filteredProducts, setFilteredProducts] = useState(()=>[]);
-  console.log(cat);
+  console.log(filteredProducts);
 
   useEffect(()=>{
     const getProducts = async ()=>{
@@ -64,7 +64,8 @@ useEffect(()=>{
 
   return (
     <Container>
-        {cat ? filteredProducts.map((item)=>(
+        {cat ? filteredProducts.length == 0 ? <div style={{textAlign:"center"}}><h3>Sorry no products avaible at this time...</h3></div>
+        : filteredProducts.map((item)=>(
             <Product item={item} key={item.id}/>
         )) : products.slice(0,8).map((item)=>(
           <Product item={item} key={item.id}/>

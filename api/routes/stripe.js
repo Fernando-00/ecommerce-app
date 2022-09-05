@@ -6,7 +6,7 @@ const fetch = require("cross-fetch");
 const KEY = process.env.STRIPE_KEY
 
 
-console.log(process.env.STRIPE_KEY)
+
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 
@@ -16,9 +16,9 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 router.get("/payment/search/:id", async (req, res) =>{
   try {
     console.log('retrievinggggggggggggggg')
-    console.log(req.params)
+    
     const session = await stripe.checkout.sessions.retrieve(req.params.id, {
-      expand: ['line_items', 'payment_intent', 'customer']
+      expand: ['customer','line_items', 'payment_intent'],
     });
     
     res.status(200).json(session);
@@ -35,7 +35,7 @@ router.post("/payment", async (req, res) => {
   
   //possible solution to explore
   const coupon = await stripe.coupons.create({percent_off: 15, duration: 'once'});
-  console.log(coupon)
+  
 
   
   const childrenResponses = await Promise.all(

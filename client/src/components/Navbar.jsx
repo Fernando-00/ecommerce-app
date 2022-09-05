@@ -120,6 +120,12 @@ const Navbar = () => {
         
     }
 
+    const handleClick= event =>{
+        console.log("hi")
+        
+        
+    }
+
   return (
     <Container>
         <Wrapper>
@@ -130,7 +136,7 @@ const Navbar = () => {
                     <Input placeholder="Search" name="search" onChange={(e)=>setSearch(e.target.value)} />
                     </form>
                     
-                    <Search style={{color:"gray", fontSize:16}}/>
+                    <Search style={{color:"gray", fontSize:16, cursor: "pointer"}} onClick={handleSubmit}/>
                 </SearchContainer>
                 
             </Left>
@@ -142,7 +148,7 @@ const Navbar = () => {
             <Right>
 
                 
-                {user ? <><MenuItem>{user.username}</MenuItem><MenuImg src={user.img}/> <MenuItem><button onClick={handleLogout} style={{cursor:"pointer"}}>Logout</button></MenuItem> </>:
+                {user ? <><MenuItem>{user.username}</MenuItem><Link to="/profile"><MenuImg src={user.img}/></Link> <MenuItem><button onClick={handleLogout} style={{cursor:"pointer"}}>Logout</button></MenuItem> </>:
                 <><Link to="/register" style={{textDecoration:"none", color:"inherit"}}> <MenuItem>Register</MenuItem></Link> <Link to="/login" style={{textDecoration:"none", color:"inherit"}}><MenuItem>Login</MenuItem></Link> </>}
                 
                 <Link to="/cart">

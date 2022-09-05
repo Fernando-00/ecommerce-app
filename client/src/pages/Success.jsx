@@ -1,61 +1,63 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
-import { userRequest } from "../requestMethods";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation} from "react-router";
+import Navbar from "../components/Navbar";
+import Announcement from '../components/Announcement'
+import { publicRequest, userRequest } from "../requestMethods";
+import { useNavigate } from "react-router-dom";
+import {addOrder} from "../redux/apiCalls"
 
 const Success = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   console.log(location)
   //in Cart.jsx I sent data and cart. Please check that page for the changes.(in video it's only data)
   const stripeId = location.pathname.split('/')[2];
   const [stripeData, setStripeData] = useState({});
+  
   console.log(stripeId)
   
   // const cart = location.state.cart;
-  const currentUser = useSelector((state) => state.user?.currentUser);
+  const currentUser = useSelector((state) => state.persistedReducer.user?.currentUser);
+  const cart = useSelector((state) => state.persistedReducer.cart);
   console.log(currentUser)
-  const [orderId, setOrderId] = useState(null);
+  const orderId = "";
 
   useEffect(()=>{
-    const fetchDetails = () =>{
-      fetch(`http://localhost:5000/api/checkout/payment/search/${stripeId}`)
+    const fetchDetails = async () =>{
+      await fetch(`http://localhost:5000/api/checkout/payment/search/${stripeId}`)
         .then(response=>response.json())
         .then(res => {
           
           setStripeData(res);
-          console.log(res)
+          console.log(stripeData)
+          addOrder(dispatch, res, cart, currentUser);
+
         })
         .catch(e => {
         console.error(e.error)
         });
+
     }
     stripeId && fetchDetails();
     
   },[])
 
 
-  // useEffect(() => {
-  //   const createOrder = async () => {
-  //     try {
-  //       const res = await userRequest.post("/orders", {
-  //         userId: currentUser? currentUser._id: "",
-  //         orderId: stripeData.data._id,
-  //         customerId : stripeData.customer.id,
-  //         products: stripeData.line_items.data.map((item) => ({
-  //           productId: item._id,
-  //           quantity: item._quantity,
-  //         })),
-  //         amount: cart.total,
-  //         address: stripeData.billing_details.address,
-  //       });
-  //       setOrderId(stripeData.data._id);
-  //     } catch {}
-  //   };
-  //   stripeData && createOrder();
-  // }, [stripeData]);
+
+  console.log(orderId)
+  console.log(stripeData)
+
+  const returnHome = () =>{
+    const path = '/';
+    navigate(path);
+  }
 
   return (
+    <>
+    
     <div
       style={{
         height: "100vh",
@@ -65,11 +67,12 @@ const Success = () => {
         justifyContent: "center",
       }}
     >
-      {orderId
-        ? `Order has been created successfully. Your order number is ${orderId}`
-        : `Successfull. Your order is being prepared...`}
-      <button style={{ padding: 10, marginTop: 20 }}>Go to Homepage</button>
+      
+      <h3>Thank You, For shopping at ROSELL!</h3>
+      <h3>Your order is currently being processed...</h3>
+      <button style={{ padding: 10, marginTop: 20 }} onClick={returnHome}>Go to Homepage</button>
     </div>
+    </>
   );
 };
 

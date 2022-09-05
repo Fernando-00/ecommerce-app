@@ -27,6 +27,7 @@ export default function User() {
     state.persistedReducer.client.clients.find((user)=>user._id === userId)
     );
     
+    
     //Created at date from database converted to readable time iso->string
     const createdDate = new Date(user.createdAt);
 
@@ -38,6 +39,7 @@ export default function User() {
         })
     };
   
+    console.log(inputs)
 
   const handleClick = (e) =>{
     e.preventDefault();

@@ -13,9 +13,13 @@ import {
 import Success from "./pages/Success";
 import { useSelector } from "react-redux";
 import ScrollToTop from "./ScrollToTop";
+import Profile from "./pages/Profile";
+import Order from "./pages/Order";
 
 
 const App = () => {
+
+  
 
   const user = useSelector(state=> state.persistedReducer.user?.currentUser);
 
@@ -41,7 +45,10 @@ const App = () => {
 
 
           <Route path="/login" element={ user ? <Navigate to="/"/> : <Login/>}/>  
-          <Route path="/register" element={ user ? <Navigate to="/"/> : <Register/>}/>  
+          <Route path="/register" element={ user ? <Navigate to="/"/> : <Register/>}/>
+          <Route path="/profile" element={ user ? <Profile/> : <Navigate to="/"/>}/>
+          <Route path="/profile/orders" element={ user ? <Order/> : <Navigate to="/"/>}/>
+
            
         </Routes>
         </ScrollToTop>

@@ -2,6 +2,7 @@
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addClientFailure, addClientStart, addClientSuccess, deleteClientFailure, deleteClientStart, deleteClientSuccess, getClientFailure, getClientStart, getClientSuccess, updateClientFailure, updateClientStart, updateClientSuccess } from "./clientRedux";
+import { addOrderFailure, addOrderStart, deleteOrderStart, deleteOrderSuccess, getOrderFailure, getOrderStart, getOrderSuccess, updateOrderFailure, updateOrderStart, updateOrderSuccess } from "./orderRedux";
 import { 
     deleteProductFailure,
     deleteProductStart,
@@ -174,6 +175,7 @@ export const updateClient = async (id, client, dispatch, navigate)=>{
     try {
         // update using acios userRequest in FUTURE
         // const res = await userRequest.post(`/products/`, {product});
+        console.log(client)
         const res = await userRequest.put(`/users/${id}`,client);
         
         
@@ -216,3 +218,48 @@ export const addClient = async (client, dispatch, navigate)=>{
 
 
 // -------------------------------------------
+
+
+//----------------------------------------------------------------------
+
+//ALL ORDER CALLS
+
+
+export const getOrders = async (dispatch)=>{
+    dispatch(getOrderStart());
+    try {
+        const res = await userRequest.get("/orders");
+        
+        dispatch(getOrderSuccess(res.data));
+        
+    } catch (err) {
+        dispatch(getOrderFailure());
+
+        if(err.response?.status == 403){
+            console.log(err.response)
+            console.log("Token has expired...")
+            console.log("Dispatching Logout...")
+            dispatch(logout());
+        }
+    }
+};
+
+export const deleteOrder = async (id, dispatch)=>{
+    dispatch(deleteOrderStart());
+    try {
+        const res = await userRequest.delete(`/orders/${id}`);
+        console.log("PASSED THE API")
+        
+        dispatch(deleteOrderSuccess(id));
+        
+    } catch (err) {
+        dispatch(deleteClientFailure());
+        console.log("ERROR IN DELETING CLIENT")
+        if(err.response?.status == 403){
+            console.log(err.response)
+            console.log("Token has expired...")
+            console.log("Dispatching Logout...")
+            dispatch(logout());
+        }
+    }
+};

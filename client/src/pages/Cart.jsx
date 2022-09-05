@@ -1,5 +1,5 @@
-import { Add, Remove } from "@material-ui/icons";
-import { useSelector } from "react-redux";
+import { Add, Clear, Remove } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components"
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
@@ -9,6 +9,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {loadStripe} from '@stripe/stripe-js';
+import { addProduct, deleteProduct, deleteSingleProduct } from "../redux/cartRedux";
 
 
 const KEY = process.env.REACT_APP_STRIPE;
@@ -181,6 +182,7 @@ const Cart = () => {
 
     const cart = useSelector(state=>state.persistedReducer.cart)
     const [stripeToken, setStripeToken] = useState(null);
+    const dispatch = useDispatch();
     
     
     const navigate = useNavigate();
@@ -225,23 +227,26 @@ const Cart = () => {
     
     };
 
-    // useEffect(()=>{
-    //     const makeRequest = async () =>{
-    //         try {
-    //             const res = await userRequest.post("/checkout/payment", {
-    //                 tokenId: stripeToken.id,
-    //                 amount: cart.total * 100,
-    //                 cart: cart
-                    
+    const handleDelete = (product) => {
+        console.log("Deleting CLIENT")
+        dispatch(deleteProduct(product));
+        
+    };
 
-    //             });
-                
-    //         } catch (err) {
-                
-    //         }
-    //     };
-    //     stripeToken && makeRequest();
-    // }, [stripeToken, cart.total, navigate])
+    const handleSingleDelete = (product) => {
+        console.log("Deleting CLIENT")
+        dispatch(deleteSingleProduct(product));
+        
+    };
+
+    const handleAdd = (product) => {
+        console.log("Deleting CLIENT")
+        console.log(product)
+        dispatch(
+            addProduct(product)
+        );
+        
+    };
 
   return (
     <Container>
@@ -266,6 +271,7 @@ const Cart = () => {
                     {cart.products.map(product=>(<Product>
                         <ProductDetail>
                             <Image src={product.img}/>
+                            
                             <Details>
                                 <ProductName><b>Product:</b>{product.title}</ProductName>
                                 <ProductId><b>ID:</b> {product._id}</ProductId>
@@ -275,12 +281,14 @@ const Cart = () => {
                         </ProductDetail>
                         <PriceDetail>
                             <ProductAmountContainer>
-                                <Add/>
+                                <Add style={{cursor:"pointer"}} onClick={()=>handleAdd(product)}/>
                                 <ProductAmount>{product.quantity}</ProductAmount>
-                                <Remove/>
+                                <Remove style={{cursor:"pointer"}} onClick={()=>handleSingleDelete(product)}/>
                             </ProductAmountContainer>
                             <ProductPrice>$ {product.storePrice* product.quantity}</ProductPrice>
                         </PriceDetail>
+                        <Clear style={{marginRight:"20px", cursor: "pointer"}} onClick={()=>handleDelete(product)} />
+                        
                     </Product>))}
                     <Hr/>
                     
